@@ -124,22 +124,6 @@ RandomForestClassifier(
 - `GET /attendance_record` - View ML predictions
 - `GET /download_csv` - Export ML results
 
-## 🏗️ Project Structure
-
-```
-Facial_Recognisation_Attendance_System/
-├── app_improved.py                 # Flask ML model serving
-├── model.py                        # Core ML implementation
-├── model_backup.py                 # Backup ML model
-├── model.pkl                      # Trained ML model (generated)
-├── train_status.json              # Training progress
-├── requirements.txt                # ML dependencies
-├── static/js/                     # Frontend ML integration
-├── templates/                     # ML model UI
-└── dataset/                       # Training data
-    └── [student_id]/
-        └── [images].jpg           # ML training images
-```
 
 ## �� ML Model Details
 
