@@ -58,16 +58,14 @@ A machine learning application that leverages computer vision and ML algorithms 
 ```bash
 # Clone repository
 git clone <repository-url>
-cd Facial_Recognization_App/Facial_Recognisation_Attendance_System
+cd Facial_Recognisation_Attendance_System
 
 # Install ML dependencies
 pip install -r requirements.txt
 
 # Run the application
-python3 app_improved.py
+python3 app.py
 ```
-
-Access at `http://localhost:5001`
 
 ##  ML Model Implementation
 
