@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Facial Attendance System</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="static/css/style.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Enhanced UI Styles with Better Fonts */
+    body {
+      font-family: 'Roboto', 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+    
+    .hero-section {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+      border-radius: 20px;
+      padding: 4rem 2rem 3rem 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+    }
+    
+    .hero-title {
+      font-size: 2.8rem;
+      font-weight: 700;
+      font-family: 'Roboto', sans-serif;
+      color: #2d3748;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      line-height: 1.2;
+    }
+    
+    .hero-subtitle {
+      color: #64748b;
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin-bottom: 0;
+      font-family: 'Open Sans', sans-serif;
+    }
+    
+    .feature-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.5s;
+    }
+    
+    .feature-card:hover::before {
+      left: 100%;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.9;
+      transition: all 0.3s ease;
+    }
+    
+    .feature-card:hover .feature-icon {
+      transform: scale(1.1);
+    }
+    
+    .feature-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      font-family: 'Roboto', sans-serif;
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+    }
+    
+    .feature-description {
+      color: #64748b;
+      font-size: 1rem;
+      font-family: 'Open Sans', sans-serif;
+      line-height: 1.6;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .stat-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    }
+    
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      color: #64748b;
+      font-size: 0.95rem;
+      font-weight: 500;
+      font-family: 'Open Sans', sans-serif;
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    
+    .btn-enhanced {
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-family: 'Roboto', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn-enhanced::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+    
+    .btn-enhanced:hover::before {
+      left: 100%;
+    }
+    
+    .btn-enhanced:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .training-section {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    
+    .progress-enhanced {
+      height: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 1rem 0;
+      position: relative;
+    }
+    
+    .progress-bar-enhanced {
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      border-radius: 10px;
+      transition: width 0.5s ease;
+      position: relative;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .progress-bar-enhanced::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      animation: shimmer 2s infinite;
+    }
+    
+    #progressText {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-weight: 700;
+      font-size: 0.9rem;
+      font-family: 'Roboto', sans-serif;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      z-index: 10;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    .chart-container {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+    }
+    
+    .navbar-enhanced {
+      background: rgba(255, 255, 255, 0.1) !important;
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+    
+    .navbar-brand {
+      font-size: 1.6rem;
+      font-weight: 700;
+      font-family: 'Roboto', sans-serif;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .nav-link {
+      color: rgba(255, 255, 255, 0.9) !important;
+      font-weight: 500;
+      font-family: 'Open Sans', sans-serif;
+      transition: all 0.3s ease;
+    }
+    
+    .nav-link:hover {
+      color: white !important;
+      transform: translateY(-1px);
+    }
+    
+    .floating-elements {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+    
+    .floating-circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .floating-circle:nth-child(1) {
+      width: 80px;
+      height: 80px;
+      top: 20%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+    
+    .floating-circle:nth-child(2) {
+      width: 120px;
+      height: 120px;
+      top: 60%;
+      right: 15%;
+      animation-delay: 2s;
+    }
+    
+    .floating-circle:nth-child(3) {
+      width: 60px;
+      height: 60px;
+      bottom: 20%;
+      left: 20%;
+      animation-delay: 4s;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+    
+    .pulse-animation {
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.6s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Better text readability */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 600;
+    }
+    
+    p, span, div {
+      font-family: 'Open Sans', sans-serif;
+    }
+    
+    .text-muted {
+      color: #64748b !important;
+      font-weight: 400;
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating Background Elements -->
+  <div class="floating-elements">
+    <div class="floating-circle"></div>
+    <div class="floating-circle"></div>
+    <div class="floating-circle"></div>
+  </div>
+
+  <div class="right-panel">
+    <!-- Enhanced Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-enhanced">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+          <i class="fas fa-graduation-cap"></i>
+          Facial Attendance System
+        </a>
+        <div class="d-flex gap-2">
+          <a class="btn btn-outline-light" href="/add_student">
+            <i class="fas fa-user-plus me-2"></i>Add Student
+          </a>
+          <a class="btn btn-outline-light" href="/mark_attendance">
+            <i class="fas fa-camera me-2"></i>Mark Attendance
+          </a>
+          <a class="btn btn-outline-light" href="/attendance_record">
+            <i class="fas fa-chart-bar me-2"></i>Records
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section fade-in">
+      <h1 class="hero-title">Facial Attendance System</h1>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container-fluid">
+      <div class="row g-4">
+        <!-- Quick Actions -->
+        <div class="col-lg-4">
+          <div class="feature-card fade-in">
+            <div class="feature-icon">
+              <i class="fas fa-bolt"></i>
+            </div>
+            <h3 class="feature-title">Quick Actions</h3>
+            <p class="feature-description">Manage your attendance system with powerful tools</p>
+            <div class="action-buttons">
+              <a class="btn btn-primary btn-enhanced" href="/add_student">
+                <i class="fas fa-user-plus me-2"></i>Add Student
+              </a>
+              <a class="btn btn-success btn-enhanced" href="/mark_attendance">
+                <i class="fas fa-camera me-2"></i>Mark Attendance
+              </a>
+              <a class="btn btn-warning btn-enhanced" href="/attendance_record">
+                <i class="fas fa-chart-bar me-2"></i>View Records
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Training & Analytics -->
+        <div class="col-lg-8">
+          <!-- AI Training Section -->
+          <div class="training-section fade-in">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <div>
+                <h5 class="mb-2">
+                  <i class="fas fa-robot me-2"></i>AI Model Training
+                </h5>
+                <p class="text-muted mb-0">Train the facial recognition model with your data</p>
+              </div>
+              <button id="trainBtn" class="btn btn-primary btn-enhanced">
+                <i class="fas fa-play me-2"></i>Start Training
+              </button>
+            </div>
+            <div class="progress-enhanced">
+              <div id="trainProgress" class="progress-bar-enhanced" style="width:0%">
+                <span id="progressText">0%</span>
+              </div>
+            </div>
+            <div id="trainMsg" class="text-muted">
+              <i class="fas fa-info-circle me-2"></i>Model not trained yet.
+            </div>
+          </div>
+
+          <!-- Analytics Chart -->
+          <div class="feature-card fade-in">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h5 class="feature-title">
+                <i class="fas fa-chart-line me-2"></i>Attendance Analytics
+              </h5>
+              <div class="feature-icon">
+                <i class="fas fa-chart-bar"></i>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="attendanceChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Statistics Grid -->
+      <div class="stats-grid">
+        <div class="stat-card fade-in">
+          <div class="stat-number" id="totalStudents">0</div>
+          <div class="stat-label">
+            <i class="fas fa-users me-2"></i>Total Students
+          </div>
+        </div>
+        <div class="stat-card fade-in">
+          <div class="stat-number" id="todayAttendance">0</div>
+          <div class="stat-label">
+            <i class="fas fa-calendar-day me-2"></i>Today's Attendance
+          </div>
+        </div>
+        <div class="stat-card fade-in">
+          <div class="stat-number" id="accuracyRate">0%</div>
+          <div class="stat-label">
+            <i class="fas fa-bullseye me-2"></i>Recognition Accuracy
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="static/js/dashboard.js"></script>
+  
+  <script>
+    // Enhanced UI interactions
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add loading states to buttons
+      const buttons = document.querySelectorAll('.btn');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', function() {
+          if (this.id === 'trainBtn') return; // Skip for train button
+          this.style.opacity = '0.7';
+          this.style.transform = 'scale(0.98)';
+          setTimeout(() => {
+            this.style.opacity = '1';
+            this.style.transform = 'scale(1)';
+          }, 1000);
+        });
+      });
+      
+      // Animate stats on load
+      animateStats();
+      
+      // Enhanced hover effects
+      const cards = document.querySelectorAll('.feature-card, .stat-card');
+      cards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-8px) scale(1.02)';
+        });
+        card.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0) scale(1)';
+        });
+      });
+      
+      // Add stagger animation to cards
+      const fadeElements = document.querySelectorAll('.fade-in');
+      fadeElements.forEach((element, index) => {
+        element.style.animationDelay = `${index * 0.1}s`;
+      });
+    });
+    
+    function animateStats() {
+      const stats = document.querySelectorAll('.stat-number');
+      stats.forEach(stat => {
+        const finalValue = stat.textContent;
+        let currentValue = 0;
+        const increment = finalValue / 30;
+        const timer = setInterval(() => {
+          currentValue += increment;
+          if (currentValue >= finalValue) {
+            stat.textContent = finalValue;
+            clearInterval(timer);
+          } else {
+            stat.textContent = Math.floor(currentValue);
+          }
+        }, 50);
+      });
+    }
+  </script>
+</body>
+</html>
