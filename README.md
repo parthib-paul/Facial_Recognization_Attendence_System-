@@ -3,7 +3,7 @@
 
 A machine learning application that leverages computer vision and ML algorithms to automate student attendance tracking. Built with advanced ML techniques including feature engineering, ensemble learning, and real-time inference for facial recognition.
 
-## 🧠 Machine Learning Features
+## Machine Learning Features
 
 ### Core ML Capabilities
 - **Ensemble Learning**: Random Forest classifier with 150 estimators for face recognition
@@ -21,11 +21,10 @@ A machine learning application that leverages computer vision and ML algorithms 
 ## 🔬 Technical Architecture
 
 ### ML Pipeline
-```
-Raw Images → Face Detection → Feature Extraction → ML Model → Classification → Attendance
-     ↓              ↓                ↓              ↓           ↓              ↓
-  Camera Feed → Haar Cascades → Custom Embeddings → Random Forest → Prediction → Database
-```
+
+**Training Phase:** `Camera → Face Detection → 32x32 Grayscale → 1024D Vector → Random Forest Training → model.pkl`
+
+**Inference Phase:** `Live Camera → Face Detection → Feature Extraction → Random Forest Prediction → Attendance Marking`
 
 ### Machine Learning Stack
 - **scikit-learn 1.7.2**: Core ML algorithms and model training
@@ -34,7 +33,7 @@ Raw Images → Face Detection → Feature Extraction → ML Model → Classifica
 - **Pandas 2.3.2**: Data manipulation and feature engineering
 - **Flask 2.3.3**: ML model serving and API endpoints
 
-## 🎯 Key ML Features
+## Key ML Features
 
 ### Model Architecture
 - **Algorithm**: Random Forest with 150 decision trees
@@ -48,7 +47,7 @@ Raw Images → Face Detection → Feature Extraction → ML Model → Classifica
 - **Normalization**: Pixel values scaled to [0,1] range
 - **Vectorization**: Flattened to 1024-dimensional feature vectors
 
-## 🛠️ Installation & Setup
+## Installation & Setup
 
 ### Prerequisites
 - Python 3.13+
@@ -70,7 +69,7 @@ python3 app_improved.py
 
 Access at `http://localhost:5001`
 
-## �� ML Model Implementation
+##  ML Model Implementation
 
 ### Training Process
 1. **Data Collection**: Multiple face images per student
@@ -108,7 +107,7 @@ RandomForestClassifier(
 )
 ```
 
-## 🚀 ML API Endpoints
+##  ML API Endpoints
 
 ### Model Training
 - `GET /train_model` - Start ML model training
@@ -125,7 +124,7 @@ RandomForestClassifier(
 - `GET /download_csv` - Export ML results
 
 
-## �� ML Model Details
+## ML Model Details
 
 ### Training Data Requirements
 - **Multiple Images**: 10-20 photos per student recommended
@@ -138,15 +137,3 @@ RandomForestClassifier(
 - **Feature Engineering**: 32x32 embeddings balance speed and accuracy
 - **Confidence Threshold**: 50% default threshold for recognition
 - **Lighting Conditions**: Consistent lighting improves performance
-
-### Model Persistence
-```python
-# Save trained model
-with open('model.pkl', 'wb') as f:
-    pickle.dump(clf, f)
-
-# Load model for inference
-with open('model.pkl', 'rb') as f:
-    clf = pickle.load(f)
-```
-
